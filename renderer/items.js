@@ -9,6 +9,48 @@ exports.save = () => {
     localStorage.setItem('readit-items', JSON.stringify(this.storage))
 }
 
+// Set item as selected
+exports.select = e => {
+
+    // Remove currently selected item class
+    document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
+
+    // Add to clicked item
+    e.currentTarget.classList.add('selected')
+}
+
+// Move to newly selected item
+exports.changeSelection = direction => {
+
+    // Get selected item
+    let currentItem = document.getElementsByClassName('read-item selected')[0]
+
+    // Handle up/down
+    if (direction === 'ArrowUp' && currentItem.previousElementSibling) {
+        currentItem.classList.remove('selected')
+        currentItem.previousElementSibling.classList.add('selected')
+
+    } else if (direction === 'ArrowDown' && currentItem.nextElementSibling) {
+        currentItem.classList.remove('selected')
+        currentItem.nextElementSibling.classList.add('selected')
+    }
+}
+
+// Open selected item
+exports.open = () => {
+
+    // Only if we have items (in case of menu open)
+    if ( !this.storage.length ) return
+
+    // Get selected item
+    let selectedItem = document.getElementsByClassName('read-item selected')[0]
+
+    // Get item's url
+    let contentURL = selectedItem.dataset.url
+
+    console.log('Opening item: ', contentURL)
+}
+
 // Add new Items
 exports.addItem = (item, isNew = false) => {
 
@@ -18,11 +60,25 @@ exports.addItem = (item, isNew = false) => {
     // Assign "read-item" class
     itemNode.setAttribute('class', 'read-item')
 
+    // Set item url as data attribute
+    itemNode.setAttribute('data-url', item.url)
+
     // Add inner HTML
     itemNode.innerHTML = `<img src="${item.screenshot}"><h2>${item.title}</h2>`
 
     // Append new node to "items"
     items.appendChild(itemNode)
+
+    // Attach click handler to select
+    itemNode.addEventListener('click', this.select)
+
+    // Attach doubleclick handler to open
+    itemNode.addEventListener('dblclick', this.open)
+
+    // If this is the first item, select it
+    if (document.getElementsByClassName('read-item').length === 1) {
+        itemNode.classList.add('selected')
+    }
 
     // Add item to storage and persist
     if(isNew) {
