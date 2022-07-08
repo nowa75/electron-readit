@@ -1,3 +1,12 @@
+// Modules
+const fs = require('fs')
+
+// Get readerJS content
+let readerJS
+fs.readFile(`${__dirname}/reader.js`, (err, data) => {
+    readerJS = data.toString()
+})
+
 // DOM nodes
 let items = document.getElementById('items')
 
@@ -48,7 +57,19 @@ exports.open = () => {
     // Get item's url
     let contentURL = selectedItem.dataset.url
 
-    console.log('Opening item: ', contentURL)
+    // Open item in proxy BrowserWindow
+    let readerWin = window.open(contentURL, '', `
+    maxWidth=2000,
+    maxHeight=2000,
+    width=1200,
+    height=800,
+    backgroundColor=#DEDEDE,
+    nodeIntegration=0,
+    contextIsolation=1
+  `)
+
+    // Inject JavaScript
+    readerWin.eval(readerJS)
 }
 
 // Add new Items
@@ -72,7 +93,7 @@ exports.addItem = (item, isNew = false) => {
     // Attach click handler to select
     itemNode.addEventListener('click', this.select)
 
-    // Attach doubleclick handler to open
+    // Attach double-click handler to open
     itemNode.addEventListener('dblclick', this.open)
 
     // If this is the first item, select it
