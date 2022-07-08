@@ -48,8 +48,9 @@ header {
     flex-grow: 1;
 }
 
-#items {
+main {
     flex-grow: 1;
+    overflow: scroll;
 }
 
 #no-items {
@@ -71,7 +72,7 @@ header {
     align-items: center;
     align-content: center;
     flex-wrap: wrap;
-    /*display: none;*/
+    display: none;
 }
 
 #url {
@@ -93,4 +94,18 @@ header {
 
 #add-item {
     margin-left: 25px;
+}
+
+.read-item {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    border-bottom: 1px solid lightgray;
+    background: #FAFAFA;
+    padding: 10px;
+}
+
+.read-item img {
+    width: 20%;
+    margin: 25px;
 }
