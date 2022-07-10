@@ -1,5 +1,6 @@
 // Modules
 const fs = require('fs')
+const {shell} = require('electron')
 
 // Get readerJS content
 let readerJS
@@ -122,6 +123,22 @@ exports.open = () => {
 
     // Inject JavaScript with specific item index (selectedItem.index)
     readerWin.eval( readerJS.replace('{{index}}', selectedItem.index) )
+}
+
+// Open selected item in native browser
+exports.openNative = () => {
+
+    // Only if we have items (in case of menu open)
+    if ( !this.storage.length ) return
+
+    // Get selected item
+    let selectedItem = this.getSelectedItem()
+
+    // Get item's url
+    let contentURL = selectedItem.node.dataset.url
+
+    // Open in user's default system browser
+    shell.openExternal(contentURL)
 }
 
 // Add new Items
