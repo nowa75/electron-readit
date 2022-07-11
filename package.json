@@ -9,8 +9,8 @@
     "reset": "git reset --hard",
     "build": "electron-builder -mwl"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "homepage": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/nowa75/electron-readit.git",
+  "homepage": "https://github.com/nowa75/electron-readit.git",
   "keywords": [
     "Electron",
     "quick",
@@ -35,7 +35,10 @@
       "target": "dmg"
     },
     "win": {
-      "target": "zip"
+      "target": "zip",
+      "certificateFile": "prywatne/Certyfikaty.p12",
+      "certificatePassword": "",
+      "verifyUpdateCodeSignature": false
     },
     "linux": {
       "category": "Utility"
